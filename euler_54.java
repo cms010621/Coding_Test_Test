@@ -1157,6 +1157,7 @@ public class euler_54 {
         String four = list.get(3).substring(2, 3);
         String five = list.get(4).substring(2, 3);
         if(one.equals(two) && two.equals(three) && three.equals(four) && four.equals(five)) { //무늬 같을때
+            // System.out.println(one+" "+two+" "+three+" "+four+" "+five);
             return highCard(list)+" Flush";
         }
         return "";
@@ -1175,8 +1176,18 @@ public class euler_54 {
                 return "";
         }
         if(sortList.get(0) == 10) {
-            if(shape(list).equals("Flush"))
-            return "Royal "+shape(list);
+            // System.out.println(sortList);
+            // System.out.println(shape(list));
+            if(shape(list).contains("Flush")) {
+                // System.out.println(shape(list));
+                return "Royal Flush";
+            }
+        }
+        else {
+            if(shape(list).contains("Flush")) {
+                // System.out.println(shape(list));
+                return "Straight Flush";
+            }
         }
         return sortList.get(0) + "Straight "+shape(list);
     }
