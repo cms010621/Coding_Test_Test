@@ -17,7 +17,7 @@ public class euler_54 {
         int totalA = 0;
         int totalB = 0;
         String[][] Game = {
-            { "08C", "10S", "13C", "09H", "04S", "07D", "02S", "05D", "03S", "14C"}, 
+            { "04S", "08D", "08H", "08S", "14C", "07D", "02S", "05D", "03S", "14C"}, 
             { "05C", "14D", "05D", "14C", "09C", "07C", "05H", "08D", "10D", "13S"}, 
             { "03H", "07H", "06S", "13C", "11S", "12H", "10D", "11C", "02D", "08S"}, 
             { "10H", "08H", "05C", "12S", "10C", "09H", "04D", "11C", "13S", "11S"}, 
@@ -1062,11 +1062,11 @@ public class euler_54 {
                 //kind랑 스트레이트 합쳐야쥐,,, 아냐 안될거같.?나.?
                 //kind 판별.-> 같은 숫자
                     // System.out.println(kind(listA)+" 카인드 ");
-                String kindA = kind(listA); //kind개수 : 카드번호
-                String kindB = kind(listB); //숫자+모양
+                commentForA+=kind(listA); //kind개수 : 카드번호
+                commentForB+=kind(listB); //숫자+모양
 
-                int countA = Integer.parseInt(kindA.substring(0, 1));
-                int countB = Integer.parseInt(kindB.substring(0, 1));
+                // int countA = Integer.parseInt(kindA.substring(0, 1));
+                // int countB = Integer.parseInt(kindB.substring(0, 1));
 
                 //페어
                 //원페어 : 클2 슾2 다3 클9 하1 같이 숫자 2개가 같은거
@@ -1074,29 +1074,15 @@ public class euler_54 {
                 String pairA = pair(listA);
                 String pairB = pair(listB);
 
-                if(commentForA.equals("") && countA != 1) { //3카인드, 3카인드+원페어, 4카인드
-                    // commentForA+=kind(listA)+" 카인드 "; // 카인드 앞에 어떤 숫자 카인드인지 붙여야함.
-                    if(countA == 3 && pairA.equals("")) 
-                        commentForA += kindA.substring(kindA.length()-1, kindA.length())+" Three of a Kind";
-                    
-                    else if(countA == 3 && (!pairA.equals(""))) 
-                        commentForA+= "Full House";
-                        
-                    else if(countA == 4)
-                        commentForA += kindB.substring(kindB.length()-1, kindB.length())+" Four of a Kind";
+                if(commentForA.contains("Three")) {
+                    if(!pairA.equals(""))
+                    commentForA+= "Full House";
                 }
-                    
-                // System.out.println(kind(listA)+" 카인드 ");
-                if(commentForB.equals("") && countB != 1) { //3카인드, 3카인드+원페어, 4카인드
-                    if(countB == 3 && pairB.equals("")) 
-                        commentForB += kindB.substring(kindB.length()-1, kindB.length())+" Three of a Kind";
-                    
-                    else if(countB == 3 && (!pairB.equals(""))) 
-                        commentForB+= "Full House";
-                        
-                    else if(countB == 4)
-                        commentForB += kindB.substring(kindB.length()-1, kindB.length())+" Four of a Kind";
+                if(commentForB.contains("Three")) {
+                    if(!pairB.equals(""))
+                    commentForB+= "Full House";
                 }
+
                 commentForA += pairA;
                 commentForB += pairB;
 
@@ -1106,7 +1092,7 @@ public class euler_54 {
             if(commentForB.equals("")) {
                 commentForB += highCard(listB);
             }
-            System.out.println(i + "A : "+commentForA+"   B : "+commentForB);
+            // System.out.println(i + "A : "+commentForA+"   B : "+commentForB);
             
             int commentA = 0;
             int commentB = 0;
@@ -1116,7 +1102,7 @@ public class euler_54 {
                 if(commentForA.contains(rank[s])) {
                     // System.out.println(rank[s]);
                     commentA = s;
-                    break;
+                    // break;
                 }
             }
 
@@ -1128,21 +1114,28 @@ public class euler_54 {
                     break;
                 }
             }
+            int idxA = commentForA.indexOf(" "); 
+            int idxB = commentForB.indexOf(" "); 
 
             // System.out.println(i + " A : "+commentA+"   B : "+commentB);
             if(commentA == commentB) {
-                int idxA = commentForA.indexOf(" "); 
-                String A = commentForA.substring(0, idxA);
-                int idxB = commentForB.indexOf(" "); 
-                String B = commentForB.substring(0, idxB);
-                commentA += Integer.parseInt(A);
-                commentB += Integer.parseInt(B);
-                // System.out.println(i + "A : "+commentA+"   B : "+commentB);
+                System.out.println(i + " A : "+commentForA+"   B : "+commentForB);
+                commentA += Integer.parseInt(commentForA.substring(0, idxA));
+                commentB += Integer.parseInt(commentForB.substring(0, idxB));
+                System.out.println(i + "A : "+commentA+"   B : "+commentB);
             }
-            if(commentA>commentB)
+            if(commentA==commentB) {
+                // System.out.println("same..  A : "+listA+"   B : "+listB); 
+                commentA += Integer.parseInt(highCard(listA).substring(0,idxA));
+                commentB += Integer.parseInt(highCard(listB).substring(0,idxB)); //이렇게 하면 안되고 다 비교해야됨,,근데 얜 원페어니깐,,
+
+                // System.out.println("lastA : "+lastA+"  lastB : "+lastB);
+
+                // break;
+            }
+            if(commentA > commentB)
                 totalA++;
-            else
-                totalB++;
+            else totalB++;
         }
 
         System.out.println("totalA : "+totalA+"  totalB : "+totalB);
@@ -1189,7 +1182,7 @@ public class euler_54 {
                 return "Straight Flush";
             }
         }
-        return sortList.get(0) + "Straight "+shape(list);
+        return sortList.get(0) + "Straight";
     }
     
     //카인드 -> 카드 숫자가 같은지
@@ -1204,18 +1197,25 @@ public class euler_54 {
         int maxTotal = 1;
         int shape =0;
         Collections.sort(sortList); 
-        for(int i=0;i<4;i++) {
-            if(sortList.get(i) == sortList.get(i+1)) {
-                maxCount++;
-                shape = sortList.get(i);
+        // System.out.println(sortList);
+
+        int arr[] = new int [15];
+        for(int i=0;i<sortList.size();i++) {
+            int check = sortList.get(i);
+            arr[check] = arr[check]+=1;
+        }
+
+        for(int i=0;i<arr.length;i++) {
+            // System.out.println(arr[i]);
+            if(arr[i]==3) {
+                // System.out.println("threeeeeeeee");
+                return i+ " Three of a Kind";
             }
-            else {
-                if(maxCount>maxTotal) 
-                    maxTotal = maxCount;
-                maxCount = 0;
+            else if(arr[i]==4) {
+                return i+" Four of a Kind";
             }
         }
-        return maxTotal+":"+shape;
+        return "";
     }
 
     public static String pair(List<String> list) {
