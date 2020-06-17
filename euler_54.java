@@ -7,8 +7,6 @@ public class euler_54 {
 
     static String A[] = new String[5];
     static String B[] = new String[5];
-    static String ANumber[] = new String[5];
-    static String AShape[] = new String[5];
     static String BNumber[] = new String[5];
     static String BShape[] = new String[5];
     public static void main(String[] args) {
@@ -1020,96 +1018,69 @@ public class euler_54 {
         };
         String rank[] = {"High Card", "One Pair", "Two Pairs", "Three of a Kind", "Straight", "Flush", "Full House", "Four of a Kind", "Straight Flush", "Royal Flush"};
 
-        int total = 0;
-        int aRank = 0;
-        int bRank = 0;
-
         for(int i=0;i<1000;i++) {
             for(int j=0;j<5;j++) {
                 A[j] = Game[i][j];
                 B[j] = Game[i][j+5]; 
             }
 
-            Arrays.sort(A);
-            Arrays.sort(B);
-            for(int k = 0;k<5;k++) {
-                // System.out.println("k : "+A[k]);
-                ANumber[k] = A[k].substring(0, 2);
-                AShape[k] = A[k].substring(2, 3);
-                BNumber[k] = B[k].substring(0, 2);
-                BShape[k] = B[k].substring(2, 3);
-            }
-
-            //Royal Flush
-            // String s = "10S";
-
             List<String> listA = Arrays.asList(A);
             List<String> listB = Arrays.asList(B);
 
-            // for(int j=0;j<5;j++) { //?
-                
-            // }
             String commentForA = "";
             String commentForB = "";
+            
+            ArrayList<Integer> sortListA = new ArrayList<>();
+            ArrayList<Integer> sortListB = new ArrayList<>();
+            
+            sortListA.add(Integer.parseInt(listA.get(0).substring(0, 2))); //반복으로 돌리니까 InddexOutOfBoundsException 뜬다..?
+            sortListA.add(Integer.parseInt(listA.get(1).substring(0, 2)));
+            sortListA.add(Integer.parseInt(listA.get(2).substring(0, 2)));
+            sortListA.add(Integer.parseInt(listA.get(3).substring(0, 2)));
+            sortListA.add(Integer.parseInt(listA.get(4).substring(0, 2)));
+            Collections.sort(sortListA); 
+
+            sortListB.add(Integer.parseInt(listB.get(0).substring(0, 2)));
+            sortListB.add(Integer.parseInt(listB.get(1).substring(0, 2)));
+            sortListB.add(Integer.parseInt(listB.get(2).substring(0, 2)));
+            sortListB.add(Integer.parseInt(listB.get(3).substring(0, 2)));
+            sortListB.add(Integer.parseInt(listB.get(4).substring(0, 2)));
+            Collections.sort(sortListB); 
 
             //스트레이트 판별 ->연속된 숫자 로열 플러시, 스트레이트 플러시, 스트레이트
-            commentForA+=straight(listA);
-            commentForB+=straight(listB);
+            commentForA+=straight(listA, sortListA);
+            commentForB+=straight(listB, sortListB);
                 //플러시 판별 ->플러시
-                commentForA+=shape(listA);
-                commentForB+=shape(listB);
+            commentForA+=shape(listA, sortListA);
+            commentForB+=shape(listB, sortListB);
 
-                //kind랑 스트레이트 합쳐야쥐,,, 아냐 안될거같.?나.?
-                //kind 판별.-> 같은 숫자
-                    // System.out.println(kind(listA)+" 카인드 ");
-                commentForA+=kind(listA); //kind개수 : 카드번호
-                commentForB+=kind(listB); //숫자+모양
+            commentForA+=kind(sortListA); //kind개수 : 카드번호
+            commentForB+=kind(sortListB); //숫자+모양
 
-                // int countA = Integer.parseInt(kindA.substring(0, 1));
-                // int countB = Integer.parseInt(kindB.substring(0, 1));
+            //페어
+            //원페어 : 클2 슾2 다3 클9 하1 같이 숫자 2개가 같은거
+            //투페어스 : 클2 슾2 다3 클3 하1 같이 숫자 2쌍이 같은거
+            String pairA = pair(sortListA);
+            String pairB = pair(sortListB);
 
-                //페어
-                //원페어 : 클2 슾2 다3 클9 하1 같이 숫자 2개가 같은거
-                //투페어스 : 클2 슾2 다3 클3 하1 같이 숫자 2쌍이 같은거
-                String pairA = pair(listA);
-                String pairB = pair(listB);
+            commentForA += pairA;
+            commentForB += pairB;
 
-                if(commentForA.contains("Three")) {
-                    if(!pairA.equals(""))
-                    commentForA+= "Full House";
-                }
-                if(commentForB.contains("Three")) {
-                    if(!pairB.equals(""))
-                    commentForB+= "Full House";
-                }
-
-                commentForA += pairA;
-                commentForB += pairB;
-
-            if(commentForA.equals("")) { //하이카드
-                commentForA += highCard(listA);
-            }
-            if(commentForB.equals("")) {
-                commentForB += highCard(listB);
-            }
-            // System.out.println(i + "A : "+commentForA+"   B : "+commentForB);
+            if(commentForA.equals(""))  //하이카드
+                commentForA += highCard(sortListA);
+            if(commentForB.equals("")) 
+                commentForB += highCard(sortListB);
             
             int commentA = 0;
             int commentB = 0;
 
             for(int s = rank.length-1;s>=0;s--) {
-                // System.out.println(commentForA);
-                if(commentForA.contains(rank[s])) {
-                    // System.out.println(rank[s]);
+                if(commentForA.contains(rank[s])) 
                     commentA = s;
-                    // break;
-                }
             }
 
             for(int s = rank.length-1;s>=0;s--) {
-                // System.out.println(commentForA);
                 if(commentForB.contains(rank[s])) {
-                    // System.out.println(rank[s]);
                     commentB = s;
                     break;
                 }
@@ -1117,21 +1088,13 @@ public class euler_54 {
             int idxA = commentForA.indexOf(" "); 
             int idxB = commentForB.indexOf(" "); 
 
-            // System.out.println(i + " A : "+commentA+"   B : "+commentB);
             if(commentA == commentB) {
-                System.out.println(i + " A : "+commentForA+"   B : "+commentForB);
                 commentA += Integer.parseInt(commentForA.substring(0, idxA));
                 commentB += Integer.parseInt(commentForB.substring(0, idxB));
-                System.out.println(i + "A : "+commentA+"   B : "+commentB);
             }
             if(commentA==commentB) {
-                // System.out.println("same..  A : "+listA+"   B : "+listB); 
-                commentA += Integer.parseInt(highCard(listA).substring(0,idxA));
-                commentB += Integer.parseInt(highCard(listB).substring(0,idxB)); //이렇게 하면 안되고 다 비교해야됨,,근데 얜 원페어니깐,,
-
-                // System.out.println("lastA : "+lastA+"  lastB : "+lastB);
-
-                // break;
+                commentA += Integer.parseInt(highCard(sortListA).substring(0,idxA));
+                commentB += Integer.parseInt(highCard(sortListB).substring(0,idxB)); //이렇게 하면 안될것같은데 일단 하이카드.
             }
             if(commentA > commentB)
                 totalA++;
@@ -1142,62 +1105,39 @@ public class euler_54 {
     }
 
     //무늬 판별 함수
-    public static String shape(List<String> list) {
+    public static String shape(List<String> list, ArrayList<Integer> sortList) {
         int check = 1;
         String one = list.get(0).substring(2, 3);
         String two = list.get(1).substring(2, 3);
         String three = list.get(2).substring(2, 3);
         String four = list.get(3).substring(2, 3);
         String five = list.get(4).substring(2, 3);
-        if(one.equals(two) && two.equals(three) && three.equals(four) && four.equals(five)) { //무늬 같을때
-            // System.out.println(one+" "+two+" "+three+" "+four+" "+five);
-            return highCard(list)+" Flush";
-        }
+        if(one.equals(two) && two.equals(three) && three.equals(four) && four.equals(five))  //무늬 같을때
+            return highCard(sortList)+" Flush";
         return "";
     }
     //스트레이트 판별 = 연속된 카드
-    public static String straight(List<String> list) {
-        ArrayList<Integer> sortList = new ArrayList<>();
-        sortList.add(Integer.parseInt(list.get(0).substring(0, 2)));
-        sortList.add(Integer.parseInt(list.get(1).substring(0, 2)));
-        sortList.add(Integer.parseInt(list.get(2).substring(0, 2)));
-        sortList.add(Integer.parseInt(list.get(3).substring(0, 2)));
-        sortList.add(Integer.parseInt(list.get(4).substring(0, 2)));
-        Collections.sort(sortList); 
+    public static String straight(List<String> list, ArrayList<Integer> sortList) {
         for(int i=0;i<4;i++) {
             if(sortList.get(i)+1!= sortList.get(i+1)) 
                 return "";
         }
-        if(sortList.get(0) == 10) {
-            // System.out.println(sortList);
-            // System.out.println(shape(list));
-            if(shape(list).contains("Flush")) {
-                // System.out.println(shape(list));
+        if(sortList.get(0) == 10) 
+            if(shape(list, sortList).contains("Flush")) 
                 return "Royal Flush";
-            }
-        }
-        else {
-            if(shape(list).contains("Flush")) {
-                // System.out.println(shape(list));
+        
+        else 
+            if(shape(list, sortList).contains("Flush")) 
                 return "Straight Flush";
-            }
-        }
+        
         return sortList.get(0) + "Straight";
     }
     
     //카인드 -> 카드 숫자가 같은지
-    public static String kind(List<String> list) {
-        ArrayList<Integer> sortList = new ArrayList<>();
-        sortList.add(Integer.parseInt(list.get(0).substring(0, 2)));
-        sortList.add(Integer.parseInt(list.get(1).substring(0, 2)));
-        sortList.add(Integer.parseInt(list.get(2).substring(0, 2)));
-        sortList.add(Integer.parseInt(list.get(3).substring(0, 2)));
-        sortList.add(Integer.parseInt(list.get(4).substring(0, 2)));
+    public static String kind(ArrayList<Integer> sortList) {
         int maxCount = 1;
         int maxTotal = 1;
         int shape =0;
-        Collections.sort(sortList); 
-        // System.out.println(sortList);
 
         int arr[] = new int [15];
         for(int i=0;i<sortList.size();i++) {
@@ -1206,26 +1146,18 @@ public class euler_54 {
         }
 
         for(int i=0;i<arr.length;i++) {
-            // System.out.println(arr[i]);
             if(arr[i]==3) {
-                // System.out.println("threeeeeeeee");
+                if(pair(sortList).contains("Pair")) 
+                    return "Full House";
                 return i+ " Three of a Kind";
             }
-            else if(arr[i]==4) {
+            else if(arr[i]==4) 
                 return i+" Four of a Kind";
-            }
         }
         return "";
     }
 
-    public static String pair(List<String> list) {
-        ArrayList<Integer> sortList = new ArrayList<>();
-        sortList.add(Integer.parseInt(list.get(0).substring(0, 2)));
-        sortList.add(Integer.parseInt(list.get(1).substring(0, 2)));
-        sortList.add(Integer.parseInt(list.get(2).substring(0, 2)));
-        sortList.add(Integer.parseInt(list.get(3).substring(0, 2)));
-        sortList.add(Integer.parseInt(list.get(4).substring(0, 2)));
-        Collections.sort(sortList); //정렬
+    public static String pair(ArrayList<Integer> sortList) {
         int arr[] = new int [15];
 
         for(int i=0;i<sortList.size();i++) {
@@ -1233,34 +1165,22 @@ public class euler_54 {
             arr[check] = arr[check]+=1;
         }
         int count = 0;
-        //원페어 / 투페엇ㅅ
         int checkarr[] = new int[2];
         for(int i=0;i<arr.length;i++) {
-            // System.out.println(arr[i]);
-            if(arr[i] == 2) {
-                checkarr[count] = i;
-                count++;
-            }
+            if(arr[i] == 2) 
+                checkarr[count++] = i;
+            
         }
         if(count==1) return checkarr[0]+" One Pair";
         else if(count==2) {
             if(checkarr[0]>checkarr[1]) 
-            return checkarr[0] +" Two Pairs";
+                return checkarr[0] +" Two Pairs";
             return checkarr[1] +" Two Pairs";
         }
-
         return "";
     }
 
-    public static String highCard(List<String> list) {
-        ArrayList<Integer> sortList = new ArrayList<>();
-        sortList.add(Integer.parseInt(list.get(0).substring(0, 2)));
-        sortList.add(Integer.parseInt(list.get(1).substring(0, 2)));
-        sortList.add(Integer.parseInt(list.get(2).substring(0, 2)));
-        sortList.add(Integer.parseInt(list.get(3).substring(0, 2)));
-        sortList.add(Integer.parseInt(list.get(4).substring(0, 2)));
-        Collections.sort(sortList); //정렬
-
+    public static String highCard(ArrayList<Integer> sortList) {
         return String.valueOf(sortList.get(4)+ " High Card");
     }
 }
