@@ -22,7 +22,7 @@ public class codingQuiz_1 {
                     calNum += Math.pow(Integer.parseInt(arr[i]), 2);
                 }
                 arr = Integer.toString(calNum).split("");
-                if(calNum == presNum || calNum == 1 || count == 100)  {
+                if(calNum == presNum || calNum == 1 || calNum == 89)  {
                     if(calNum == 1) {
                         totCount +=1;
                         totVal += presNum;
@@ -35,6 +35,7 @@ public class codingQuiz_1 {
         System.out.println("totCount : "+totCount);
         System.out.println("totVal : "+totVal);
         System.out.println("total : "+BigInteger.valueOf(totCount*totVal));
+        //1622531837
         //1622531837
         
     }
