@@ -1,10 +1,8 @@
-import java.util.Arrays;
-
 public class codingQuiz_2 {
     public static void main(String args[]) {
 
         
-        String arrt[] = {"십조", "조", "천억", "백억", "십억", "억", "천만", "백만", "십만", "만", "천", "백", "십", ""};
+        String arrt[] = {"천조", "백조", "십조", "조", "천억", "백억", "십억", "억", "천만", "백만", "십만", "만", "천", "백", "십", ""};
         String arrNum[]= {"", "일", "이", "삼", "사", "오", "육", "칠", "팔", "구"};
 
         String value[] = {
@@ -75,9 +73,10 @@ public class codingQuiz_2 {
             str = str.replaceAll(",", "");
             strArr = str.split("");
             arrCount = 1;
-            String arr[] = {"십조", "조", "천억", "백억", "십억", "억", "천만", "백만", "십만", "만", "천", "백", "십", ""};
+            String arr[] = {"천조", "백조", "십조", "조", "천억", "백억", "십억", "억", "천만", "백만", "십만", "만", "천", "백", "십", ""};
             int numCount = 1;
             int calCount = 0;
+            //arr배열의 값 앞에 value배열의 값을 하나씩 입력.
             for(int j=strArr.length-1;j>=0; j--) {
                 numCount = Integer.parseInt(strArr[j]);
                     arr[arr.length-arrCount] = arrNum[numCount]+arr[arr.length-arrCount];
@@ -85,13 +84,13 @@ public class codingQuiz_2 {
                 arrCount++;
             }
 
+            //함수호출 후 stringbuilder변수 선언
             String calArr = toStr(arr, arrt);
-            calCount = calArr.length()+1;
-            if(calCount == 0) calCount = 1;
             StringBuilder sb = new StringBuilder();
 
+            //함수를 통해 하나씩만 남은 조억만 바로 뒷자리에 빈칸 추가.
+            //그냥 for문안에 if문 넣어서 조억만 뒤에 빈칸을 넣었어도 됏었을거 같음. 어차피 한번만 도는데.
             sb.append(calArr);
-            //조, 억, 만이 없는 경우???? -1를 반환해서 0에 빈칸이 나왔던 것 같음.
             if(sb.indexOf("조") != -1 && sb.indexOf("조")!= sb.length()-1) 
                 sb.insert(sb.indexOf("조")+1, " ");
             if(sb.indexOf("억") != -1 && sb.indexOf("억")!= sb.length()-1) 
@@ -101,32 +100,40 @@ public class codingQuiz_2 {
             sb.insert(sb.length(), "원");
             calArr = new String(sb);
 
-            System.out.println(sb);
-
+            //조, 억과는 다르게 만은 일만이 올 수 없다. 일조, 일억은 가능. 
+            //일만 중에서도 십일만 백일만 같은 경우가 나올 수 있어서 앞자리가 빈칸인 경우에만 만으로 바꿧다.
+            //이경우에는 11,111원이라는 값이 입력될 경우에는 에러가 난다. 맨앞이 일만이기때문,,
+            if(calArr.contains("일만")) {
+                int index = calArr.indexOf("일만");
+                if(calArr.substring(index-1, index).equals(" ")) 
+                    calArr = calArr.replace("일만", "만");
+            }
 
             int calSum = calArr.length() - calArr.replace(" ", "").length()+1;
-            int calTot = calSum * calCount;
-            System.out.println(calSum * calCount); 
-            totValue += calTot;
-
-
-            
+            calArr = calArr.replace(" ", "");
+            calCount = calArr.length();
+            totValue += calSum * calCount;
         }
-        System.out.println(totValue);//8
 
+        System.out.println(totValue);
     }
+
     public static String toStr(String[] arr, String[] arrt) {
+        //arr배열 길이만큼 반복하면서 조, 억, 만의 일의자리대가 아니고 일의 자리가 아니면서 값이 "일x" 인 배열의 값의 "일" 값을 제거.
         for(int i=0;i<arr.length; i++) {
-            if(arr[i].equals(arrt[i])) { //값이 없을때.
+            if(arr[i].equals(arrt[i])) 
                 arr[i] = "";
-            }
-            if(!arr[i].contains("조") || !arr[i].contains("억") || !arr[i].contains("만")) {
-                if(arr[i].contains("일") && (!arr[i].equals("일"))) 
-                    arr[i] = arr[i].replace("일", "");
-                
-            }
+        
+            if(!arr[i].contains("조") || !arr[i].contains("억") || !arr[i].contains("만")) 
+                if(arr[i].contains("일") && (!arr[i].equals("일"))) {
+                    if(arr[i].replace("일","").equals("조") || arr[i].replace("일","").equals("억") || arr[i].replace("일","").equals("만")) {
+                    }
+                    else 
+                        arr[i] = arr[i].replace("일", "");
+                }
         }
 
+        //조, 억, 만이 중복되어 들어있는 배열의 조억만을 하나만 남겨두기 위해서 작성.
         int joCount = 0;
         int eokCount = 0;
         int manCount = 0;
@@ -151,6 +158,7 @@ public class codingQuiz_2 {
             
         }
 
+        //정리.
         String calcStr = "";
         for(int i=0;i<arr.length; i++) {
             calcStr += arr[i];
