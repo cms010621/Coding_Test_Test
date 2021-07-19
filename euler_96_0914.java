@@ -120,7 +120,7 @@ public class euler_96_0914 {
         for(int w=0;w<9;w++) {
             for(int h=0;h<9; h++) {
                 //0을 포함하고 있으면
-                if(sudoku[w][h].contains("0"))
+                if(sudoku[w][h].contains("0"));
             }
         }
 
