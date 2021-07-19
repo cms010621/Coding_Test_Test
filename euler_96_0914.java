@@ -110,7 +110,7 @@ public class euler_96_0914 {
     }
 
     public static String[][] onlyOne(String[][] sudoku) {
-    
+        //행 / 열에 숫자가 하나만 포함되어 있으면 그 값으로 세팅.
         return sudoku;
     }
 
