@@ -1,40 +1,40 @@
 public class coding_test_1_map {
     public static void main(String[] args) {
-        int n = 10;
-        int[] arr1 = {0, 20, 28, 18, 11, 2, 65, 15, 32, 1, 5};
-        int[] arr2 = {30, 1, 21, 17, 28, 31, 2, 3, 34, 51} ;
-
-        String row = "";
-
-
-        String[] answer1 = new String[n];
-        String[] answer2 = new String[n];
+        int n = 16;
+        int[] arr1 = new int[n+1];
+        int[] arr2 = new int[n+1];
         String[] answer = new String[n];
 
-        String row1 = "";
+        for(int i = 0;i<=16; i++) {
+            arr1[i] = (int) ((Math.random() * ((Math.pow(2, n)) - 0)) + 0);
+            arr2[i] = (int) ((Math.random() * ((Math.pow(2, n)) - 0)) + 0);
+        }
+
+        String str1 = "";
+        String str2 = "";
+        String row = "";
 
         for(int i=0;i<n; i++) {
             row = "";
-            row1 = "";
-
-            row = String.format("%0" + n + "d", Integer.valueOf(Integer.toBinaryString(arr1[i])));
-            row = row.replaceAll("1", "#");
-            row = row.replaceAll("0", " ");
-            answer1[i] = row;
-
+            str1 = calcFunction(arr1, n, i);
+            str2 = calcFunction(arr2, n, i);
             
-            row = String.format("%0" + n +"d", Integer.valueOf(Integer.toBinaryString(arr2[i])));
-            row = row.replaceAll("1", "#");
-            row = row.replaceAll("0", " ");
-            answer2[i] = row;
-
             for(int j = 0;j<n; j++) {
-                row1 += answer1[i].charAt(j) == '#' || answer2[i].charAt(j) == '#' ? '#' : " "; 
+                row += str1.charAt(j) == '#' || str2.charAt(j) == '#' ? '#' : " "; 
             }
-            answer[i] = row1;
-            System.out.println(row1);
+            answer[i] = row;
+            System.out.println(row);
         }
+    }
 
-
+    public static String calcFunction(int[] arr, int n, int i) {
+        String row = Integer.toBinaryString(arr[i]);
+        int count = row.length();
+        for(int j=0;j<n-count; j++) {
+            row = '0' + row;
+        }
+        row = row.replaceAll("1", "#");
+        row = row.replaceAll("0", " ");
+        return row;
     }
 }
