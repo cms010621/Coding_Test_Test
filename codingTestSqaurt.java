@@ -1,6 +1,6 @@
 public class codingTestSqaurt {
     public static void main(String[] args) {
-        String s = "4999999999999";
+        String s = "50000000000000";
         long n = Long.valueOf(s);
         long answer = -1;
         double d = Math.sqrt(Double.parseDouble(String.valueOf(n)));
