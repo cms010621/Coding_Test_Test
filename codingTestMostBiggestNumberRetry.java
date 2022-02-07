@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class codingTestMostBiggestNumberRetry {
     public static void main(String[] args) {
-        int[] numbers = {3, 344, 34, 5, 9};
+        int[] numbers = { 979, 97, 978, 81,818,817};
         ArrayList<String> arrayList = new ArrayList<>();
         ArrayList<Integer> arr = new ArrayList<>();
         String answer = "";
