@@ -4,21 +4,18 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
-public class baekjoon_1297 {
+public class baekjoon_20492 {
     public static void main(String[] args) throws IOException {
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));  
 
-        String str[] = bf.readLine().split(" ");
-        int d = Integer.parseInt(str[0]);
-        int h = Integer.parseInt(str[1]);
-        int w = Integer.parseInt(str[2]);
+        int n = Integer.parseInt(bf.readLine());
 
-        for(int i=1; i<d; i++) {
-            
-        }
+        int ans1 = n - (n/100*22);
+        int ans2 = n/100*80;
+        ans2 = ans2 + ((n-ans2) / 100 * 78);
 
-       
+        bw.write(ans1 + " " + ans2);
         bw.flush();
         bf.close();
     }

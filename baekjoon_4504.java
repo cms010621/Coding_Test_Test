@@ -4,21 +4,23 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
-public class baekjoon_1297 {
+public class baekjoon_4504 {
     public static void main(String[] args) throws IOException {
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));  
 
-        String str[] = bf.readLine().split(" ");
-        int d = Integer.parseInt(str[0]);
-        int h = Integer.parseInt(str[1]);
-        int w = Integer.parseInt(str[2]);
+        int num = Integer.parseInt(bf.readLine());
+        while(true) {
+            int val = Integer.parseInt(bf.readLine());
+            if(val == 0) break;
 
-        for(int i=1; i<d; i++) {
-            
+            if(val%num == 0) {
+                bw.write(val + " is a multiple of "+num + ".\n");
+            } else {
+                bw.write(val + " is NOT a multiple of "+num + ".\n");
+            }   
         }
 
-       
         bw.flush();
         bf.close();
     }

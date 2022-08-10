@@ -4,21 +4,25 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
-public class baekjoon_1297 {
+public class baekjoon_10768 {
     public static void main(String[] args) throws IOException {
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));  
 
-        String str[] = bf.readLine().split(" ");
-        int d = Integer.parseInt(str[0]);
-        int h = Integer.parseInt(str[1]);
-        int w = Integer.parseInt(str[2]);
+        int month = Integer.parseInt(bf.readLine());
+        int day = Integer.parseInt(bf.readLine());
+        int preMonth = 2;
+        int preDay = 18;
 
-        for(int i=1; i<d; i++) {
-            
+
+        if(month < preMonth || (month == preMonth && day < preDay)) {
+            bw.write("Before");
+        } else if(month == preMonth && day == preDay) {
+            bw.write("Special");
+        } else {
+            bw.write("After");
         }
 
-       
         bw.flush();
         bf.close();
     }
