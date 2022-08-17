@@ -13,7 +13,6 @@ public class baekjoon_2523 {
 
         for(int i=1; i<=cnt; i++) {
             String s = "";
-            int num = (cnt*2)-(i*2);
             for(int j=1; j<=cnt*2; j++) {
                 if(j <= i) {
                     s += "*";
@@ -25,7 +24,6 @@ public class baekjoon_2523 {
         }
         for(int i=cnt-1; i>0; i--) {
             String s = "";
-            int num = (cnt*2)-(i*2);
             for(int j=1; j<=cnt*2; j++) {
                 if(j <= i) {
                     s += "*";
