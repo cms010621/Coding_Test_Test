@@ -16,8 +16,6 @@ public class baekjoon_2523 {
             for(int j=1; j<=cnt*2; j++) {
                 if(j <= i) {
                     s += "*";
-                } else {
-                    s += " ";
                 }
             }
             bw.write(s+"\n");
@@ -27,8 +25,6 @@ public class baekjoon_2523 {
             for(int j=1; j<=cnt*2; j++) {
                 if(j <= i) {
                     s += "*";
-                } else {
-                    s += " ";
                 }
             }
             bw.write(s+"\n");
