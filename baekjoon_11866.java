@@ -5,7 +5,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
-public class baekjoon_1158_copy {
+public class baekjoon_11866 {
     public static void main(String[] args) throws IOException {
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));  
@@ -20,17 +20,20 @@ public class baekjoon_1158_copy {
             arrayList.add(i+1);
         }
 
-        int cnt = 0;
+        int cnt = -1;
         for(int i=0; i<n-1; i++) {
             cnt += k;
-            if(cnt == arrayList.size() && k == cnt) {
-                cnt = cnt-k;
+            if(cnt == arrayList.size()) {
+                cnt = 0;
+            } else if(cnt > arrayList.size()) {
+                cnt = (cnt-arrayList.size())%cnt;
             }
-
+            if(cnt >= arrayList.size()) { 
+                cnt = cnt%arrayList.size();
+            }
             arr1.add(arrayList.get(cnt));
             arrayList.remove(cnt);
             cnt--;
-            // bw.write(arrayList+"\n");
         }
 
         bw.write("<");
