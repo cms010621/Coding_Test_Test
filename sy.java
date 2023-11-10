@@ -31,8 +31,9 @@ public class sy {
         }
 
         System.out.println("_______________게임을 시작하지_______________");
-
-        capital(0, "c:\\Minseong\\Euler\\Euler\\file.txt");
+        Thread.sleep(500);
+        System.out.println("Score : " + capital(0, "c:\\Minseong\\Euler\\Euler\\file.txt") + "/1961");
+        System.out.println("_____________________________________________");
 
     } // main
 
@@ -45,14 +46,17 @@ public class sy {
             System.out.println("숫자가 아닌 값이 입력되었습니다. 다시 입력해주세요.");
             return 0;
         }
-    } // repeatNumber(String number)
+    } // checkNumber()
 
-    public static String[] capital(int ddd, String loc) throws Exception {
+    public static int capital(int totalScore, String loc) throws Exception {
         File file = new File("C:\\Minseong\\Euler\\Euler\\file.txt");
         BufferedReader filReader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "utf-8"));
 
         String line = "";
         List<String> list = new ArrayList();
+        Boolean fin = false;
+
+        System.out.println("pass를 입력하시면 다음 문제로 넘어가고, finish를 입력하시면 즉시 종료됩니다.");
 
         while ((line = filReader.readLine()) != null) {
             list.add(line);
@@ -65,49 +69,72 @@ public class sy {
             String rAnswer = ans[1].trim();
             String contry = ans[0];
             if (i != 0) {
-                Thread.sleep(1000);
+                Thread.sleep(500);
             }
-            System.out.println(contry + " 의 수도는 어디일까요?");
+            System.out.println(contry + "의 수도는 어디일까요?");
             int wrongCnt = 1;
 
             while (true) {
                 String answer = sc.nextLine().trim();
-                if (answer.equals(rAnswer)) {
+                if (answer.equals("finish")) {
+                    fin = true;
+                    break;
+                }
+                if (answer.equals("pass")) {
+                    break;
+                }
+
+                if (answer.equals(rAnswer) || rAnswer.contains(answer)) {
                     System.out.println("정답입니다~~~~~~");
+                    totalScore++;
                     break;
                 } else {
-                    System.out.println(wrongCnt % 3);
                     if (wrongCnt % 3 == 0) {
                         System.out.println("힌트가 필요하시면 0, 필요 없으시다면 아무 키를 입력해주세요");
-                        checkCapitalHint((Object) sc.nextLine(), rAnswer);
-                        if (sc.nextLine().equals(rAnswer)) {
-                            System.out.println("정답입니다~~~~~~");
+                        Object oAns = (Object) sc.nextLine();
+                        checkCapitalHint(oAns, rAnswer);
+                        switch (String.valueOf(oAns)) {
+                            case "pass":
+                                break;
+                            case "finish":
+                                fin = true;
+                                break;
+                            default:
+                                continue;
+                        }
+                        if (oAns.equals(rAnswer) || rAnswer.contains(answer)) {
+                            System.out.println("정답입니다~~~~~~2");
+                            totalScore++;
                             break;
                         } else {
                             System.out.println("잘못된 정답입니다. 다시 시도해 주세요!");
+                            wrongCnt++;
                         }
-                        wrongCnt++;
                     } else {
                         System.out.println("잘못된 정답입니다. 다시 시도해 주세요!");
                         wrongCnt++;
                     }
                 }
             }
-
+            if (fin)
+                break;
         }
-
-        return new String[] { "test", "test" };
+        return totalScore;
     }
 
     public static String checkCapitalHint(Object hintNum, String answer) {
         String answerCap = "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ";
-        List<String> arr = new ArrayList();
 
         if (hintNum.equals((Object) "0")) {
             for (int i = 0; i < answer.length(); i++) {
-                char cho = String.valueOf(answer.charAt(i)).charAt(0);
-                cho = (char) ((cho - 0xAC00) / 28 / 21);
-                System.out.print(answerCap.charAt((int) cho));
+                if (answer.charAt(i) == ',') {
+                    System.out.print(", ");
+                } else {
+                    char cho = String.valueOf(answer.charAt(i)).charAt(0);
+                    cho = (char) ((cho - 0xAC00) / 28 / 21);
+                    System.out.print(answerCap.charAt((int) cho)); // 여기서 에러
+                }
+
             }
             System.out.println();
         }
