@@ -32,7 +32,7 @@ public class sy {
 
         System.out.println("_______________게임을 시작하지_______________");
         Thread.sleep(500);
-        System.out.println("Score : " + capital(0, "c:\\Minseong\\Euler\\Euler\\file.txt") + "/1961");
+        System.out.println("Score : " + capital(0, "c:\\Minseong\\Euler\\Euler\\file.txt") + "/196");
         System.out.println("_____________________________________________");
 
     } // main
@@ -59,7 +59,7 @@ public class sy {
         System.out.println("pass를 입력하시면 다음 문제로 넘어가고, finish를 입력하시면 즉시 종료됩니다.");
 
         while ((line = filReader.readLine()) != null) {
-            list.add(line);
+            list.add(line.trim());
         }
         String s = "";
         byte[] d = s.getBytes();
@@ -92,18 +92,20 @@ public class sy {
                     if (wrongCnt % 3 == 0) {
                         System.out.println("힌트가 필요하시면 0, 필요 없으시다면 아무 키를 입력해주세요");
                         Object oAns = (Object) sc.nextLine();
-                        checkCapitalHint(oAns, rAnswer);
+                        String ans1 = checkCapitalHint(oAns, rAnswer);
                         switch (String.valueOf(oAns)) {
                             case "pass":
+                                wrongCnt++;
                                 break;
                             case "finish":
+                                wrongCnt++;
                                 fin = true;
                                 break;
                             default:
                                 continue;
                         }
                         if (oAns.equals(rAnswer) || rAnswer.contains(answer)) {
-                            System.out.println("정답입니다~~~~~~2");
+                            System.out.println("정답입니다~~~~~~");
                             totalScore++;
                             break;
                         } else {
@@ -137,9 +139,11 @@ public class sy {
 
             }
             System.out.println();
+        } else {
+            return "N";
         }
 
-        return answer;
+        return "Y";
     }
 
 }
